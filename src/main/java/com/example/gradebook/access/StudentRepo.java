@@ -14,6 +14,8 @@ public interface StudentRepo extends JpaRepository<Student, Integer> {
     List<Student> findByGroupId(int groupId);
 
     @Query(value = "SELECT id FROM person WHERE class = ?1", nativeQuery = true)
-    List<Integer> getAllStudentIdByGroup(int groupId);
+    List<Integer> getStudentsIdByGroup(int groupId);
 
+    @Query(value = "SELECT id FROM person WHERE class = ?1 AND firstname = ?2 AND lastname = ?3", nativeQuery = true)
+    List<Integer> getStudentsIdByGroupNameSurname(int groupId, String firstName, String lastName);
 }

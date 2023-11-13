@@ -6,28 +6,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/groups")
+@RequestMapping("/students")
 public class StudentController {
     @Autowired
     StudentService studentService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getGroup(@PathVariable("id") int groupId){
-        return ResponseEntity.ok(studentService.getGroup(groupId));
-    }
-
-    @GetMapping("/{id}/avg_marks")
-    public ResponseEntity<?> getMeanGradeByGroup(@PathVariable("id") int groupId){
-        return ResponseEntity.ok(studentService.getMeanGradeGroup(groupId));
-    }
-
-    @PutMapping("/{groupId}/students/{studentId}/marks/{subjectName}/{mark}")
-    public ResponseEntity<?> updateStudentGrade(@PathVariable("groupId") int groupId,
-                                                @PathVariable("studentId") int studentId,
+    @PutMapping("/{studentId}/marks/{subjectName}/{mark}")
+    public ResponseEntity<?> updateStudentGrade(@PathVariable("studentId") int studentId,
                                                 @PathVariable("subjectName") String subjectName,
                                                 @PathVariable("mark") int mark) {
 
-        return ResponseEntity.ok(studentService.updateStudentGrade(groupId, studentId, subjectName, mark));
+        return ResponseEntity.ok(studentService.updateGradeByStudentId(studentId, subjectName, mark));
     }
-
 }

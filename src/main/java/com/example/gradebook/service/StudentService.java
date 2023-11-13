@@ -36,7 +36,6 @@ public class StudentService {
     }
 
     public GroupDto<StudentMeanGradeDto> getMeanGradeGroup(int groupId) {
-        List<Integer> studentIds = studentRepo.getAllStudentIdByGroup(groupId);
         List<StudentMeanGradeDto> students = new ArrayList<>();
         for (var x : studentRepo.findByGroupId(groupId)) {
             students.add(new StudentMeanGradeDto(x));
@@ -44,9 +43,21 @@ public class StudentService {
         return new GroupDto<>(students, students.size());
     }
 
-    public StudentGradesDto updateStudentGrade(int groupId, int studentId, String subjectName, int mark) {
+    public StudentGradesDto updateGradeByStudentId(int studentId, String subjectName, int mark) {
         gradeRepo.updateMarkByStudentId(mark, subjectName, studentId);
         var student = studentRepo.getReferenceById(studentId);
         return new StudentGradesDto(student);
+    }
+
+    public GroupDto<StudentMeanGradeDto> updateGradeByStudentNameSurname(int groupId, String name, String surname, String subjectName, int mark) {
+        List<Integer> studentIds = studentRepo.getStudentsIdByGroupNameSurname(groupId, name, surname);
+        if (studentIds == null)
+            return null;
+        List<StudentMeanGradeDto> students = new ArrayList<>();
+        for (var studentId : studentIds) {
+            gradeRepo.updateMarkByStudentId(mark, subjectName, studentId);
+            students.add(new StudentMeanGradeDto(studentRepo.getReferenceById(studentId)));
+        }
+        return new GroupDto<>(students, students.size());
     }
 }

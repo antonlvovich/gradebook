@@ -5,20 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentGradesDto extends StudentDto {
-    private Set<GradeDto> grades;
+    private Map<String, Short> grades;
 
     public StudentGradesDto(Student student) {
         super(student);
-        grades = new HashSet<>();
-        for (var grade : student.getGrades())
-            grades.add(new GradeDto(grade));
+        grades = new HashMap<>();
+        for (var grade : student.getGrades()) {
+            grades.put(grade.getId().getSubjectName(), grade.getMark());
+        }
     }
-
 }
