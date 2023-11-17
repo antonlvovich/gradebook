@@ -1,23 +1,25 @@
 package com.example.gradebook.controller;
 
 import com.example.gradebook.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/groups")
 public class GroupController {
-    @Autowired
-    StudentService studentService;
+    private final StudentService studentService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getGroup(@PathVariable("id") int groupId){
+    public GroupController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
+    @GetMapping("/{groupId}")
+    public ResponseEntity<?> getGroup(@PathVariable("groupId") int groupId){
         return ResponseEntity.ok(studentService.getGroup(groupId));
     }
 
-    @GetMapping("/{id}/avg_marks")
-    public ResponseEntity<?> getMeanGradeByGroup(@PathVariable("id") int groupId){
+    @GetMapping("/{groupId}/avg_marks")
+    public ResponseEntity<?> getMeanGradeByGroup(@PathVariable("groupId") int groupId){
         return ResponseEntity.ok(studentService.getMeanGradeGroup(groupId));
     }
 
